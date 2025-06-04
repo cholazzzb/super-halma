@@ -21,10 +21,10 @@ export class Store<T> {
    * @returns {() => void} A function to unsubscribe the listener.
    */
   subscribe(listener: Listener, debug?: string): () => void {
-    console.debug('subscribed', debug);
+    console.debug("subscribed", debug);
     this.listeners.add(listener);
     return () => {
-      console.debug('unsubscribed', debug);
+      console.debug("unsubscribed", debug);
       this.listeners.delete(listener);
     };
   }
@@ -37,5 +37,10 @@ export class Store<T> {
     for (const listener of this.listeners) {
       listener();
     }
+  }
+
+  protected setState(nextState: T, debug?: string) {
+    this.state = nextState;
+    this.emitChange(debug);
   }
 }

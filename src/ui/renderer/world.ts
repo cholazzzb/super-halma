@@ -1,10 +1,11 @@
-import { Group } from 'three';
+import { Group } from "three";
 
-import { Position } from '@/logic/domain/position';
-import { Terrain } from '@/logic/domain/terrain';
-import { Tile } from './tile';
+import { Position } from "@/logic/domain/position";
+import { Terrain } from "@/logic/domain/terrain";
+import { Tile } from "./tile";
 
 export class World extends Group {
+  public name = "world";
   public terrain: Array<Tile> = [];
 
   constructor(

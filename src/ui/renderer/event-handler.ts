@@ -1,8 +1,9 @@
-import { PerspectiveCamera, Vector2, WebGLRenderer } from 'three';
+import { PerspectiveCamera, Vector2, WebGLRenderer } from "three";
 
-import { Piece } from './piece';
-import { Meshes, RaycasterHandler } from './raycaster-handler';
-import { Tile } from './tile';
+import { Piece } from "./piece";
+import { RaycasterHandler } from "./raycaster-handler";
+import { Tile } from "./tile";
+import { Meshes } from "@/logic/service/setup";
 
 export class EventHandler {
   private raycasterHandler: RaycasterHandler;
@@ -22,9 +23,9 @@ export class EventHandler {
 
     this.raycasterHandler = new RaycasterHandler(meshes);
 
-    window.addEventListener('resize', this.boundOnResize);
-    window.addEventListener('pointermove', this.boundOnPointerMove);
-    window.addEventListener('click', this.boundOnClick);
+    window.addEventListener("resize", this.boundOnResize);
+    window.addEventListener("pointermove", this.boundOnPointerMove);
+    window.addEventListener("click", this.boundOnClick);
   }
 
   private onResize() {
@@ -60,8 +61,8 @@ export class EventHandler {
   }
 
   dispose() {
-    window.removeEventListener('resize', this.boundOnResize);
-    window.removeEventListener('pointermove', this.boundOnPointerMove);
-    window.removeEventListener('click', this.boundOnClick);
+    window.removeEventListener("resize", this.boundOnResize);
+    window.removeEventListener("pointermove", this.boundOnPointerMove);
+    window.removeEventListener("click", this.boundOnClick);
   }
 }

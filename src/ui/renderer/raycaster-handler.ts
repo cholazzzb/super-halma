@@ -1,16 +1,11 @@
-import { Raycaster } from 'three';
+import { Raycaster } from "three";
 
-import { SelectPieceCommand } from './command/select-piece';
-import { SelectTargetCommand } from './command/select-target';
-import type { Interactionable } from './interactionable';
-import type { Piece } from './piece';
-import type { Tile } from './tile';
-import type { World } from './world';
-
-export type Meshes = {
-  world: World;
-  pieces: Array<Piece>;
-};
+import { Meshes } from "@/logic/service/setup";
+import { SelectPieceCommand } from "./command/select-piece";
+import { SelectTargetCommand } from "./command/select-target";
+import type { Interactionable } from "./interactionable";
+import type { Piece } from "./piece";
+import type { Tile } from "./tile";
 
 export class RaycasterHandler {
   public raycaster = new Raycaster();
@@ -48,12 +43,12 @@ export class RaycasterHandler {
 
   public onClick(mesh: Tile | Piece | null) {
     if (mesh === null) return;
-    if (mesh.name === 'tile' && this.targetsObj.length > 0) {
+    if (mesh.name === "tile" && this.targetsObj.length > 0) {
       new SelectTargetCommand(this).execute(mesh);
       return;
     }
 
-    if (mesh.name === 'piece') {
+    if (mesh.name === "piece") {
       new SelectPieceCommand(this).execute(mesh);
       return;
     }

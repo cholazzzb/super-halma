@@ -5,14 +5,14 @@ import {
   PerspectiveCamera,
   Scene,
   WebGLRenderer,
-} from 'three';
-import { OrbitControls } from 'three/examples/jsm/Addons.js';
-import GUI from 'three/examples/jsm/libs/lil-gui.module.min.js';
-import Stats from 'three/examples/jsm/libs/stats.module.js';
+} from "three";
+import { OrbitControls } from "three/examples/jsm/Addons.js";
+import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
+import Stats from "three/examples/jsm/libs/stats.module.js";
 
-import { Terrain } from '@/logic/domain/terrain';
+import { Terrain } from "@/logic/domain/terrain";
 
-export class Initializer {
+export class ThreeApp {
   public renderer: WebGLRenderer;
   public scene: Scene;
   public camera: PerspectiveCamera;
@@ -28,9 +28,9 @@ export class Initializer {
     this.camera = this.initCamera();
     this.controls = this.initControls();
 
-    const { gui, stats } = this.initDebugger();
-    this.gui = gui;
-    this.stats = stats;
+    // const { gui, stats } = this.initDebugger();
+    // this.gui = gui;
+    // this.stats = stats;
   }
 
   start() {
@@ -100,6 +100,6 @@ export class Initializer {
   private animate() {
     this.controls.update();
     this.renderer.render(this.scene, this.camera);
-    this.stats.update();
+    // this.stats.update();
   }
 }

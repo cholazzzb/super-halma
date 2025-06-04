@@ -1,34 +1,33 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
-import { Terrain } from '@/logic/domain/terrain';
-import { DebugPanel } from '@/ui/panel/debug';
-import { TurnPanel } from '@/ui/panel/turn';
-import { EventHandler } from '@/ui/renderer/event-handler';
-import { Initializer } from '@/ui/renderer/initializer';
-import { renderPieces } from '@/ui/renderer/initializer/game';
-import { World } from '@/ui/renderer/world';
+import { threeAppStore } from "@/logic/store/three-app";
+import { useEventEmitter } from "@/shared-logic/hook/event-emitter";
+import { Player1Panel } from "@/ui/panel/player-1";
+import { Player2Panel } from "@/ui/panel/player-2";
+import { TurnPanel } from "@/ui/panel/turn";
+import { EventHandler } from "@/ui/renderer/event-handler";
+import { ThreeApp } from "@/ui/renderer/three-app";
+import { DebugPanel } from "@/ui/panel/debug";
 
 export function Game() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const eventEmitter = useEventEmitter();
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const initializer = new Initializer(canvas);
-    initializer.start();
+    const threeApp = new ThreeApp(canvas);
+    threeApp.start();
 
-    const world = new World(Terrain.width, Terrain.height);
-    initializer.scene.add(world);
-    const pieces = renderPieces();
-    pieces.map((pi) => world.add(pi));
+    eventEmitter("setup:render-world", { threeApp });
 
-    const meshes = {
-      world,
-      pieces,
-    };
-
-    new EventHandler(initializer.renderer, initializer.camera, meshes);
+    const { meshes } = threeAppStore.getState();
+    if (!meshes) {
+      throw Error("game.tsx: failed to get meshes record for eventHandler");
+    }
+    new EventHandler(threeApp.renderer, threeApp.camera, meshes);
   }, []);
 
   return (
@@ -37,6 +36,8 @@ export function Game() {
 
       <TurnPanel />
       <DebugPanel />
+      <Player1Panel />
+      <Player2Panel />
     </>
   );
 }

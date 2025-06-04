@@ -1,8 +1,16 @@
-import { Position } from '../domain/position';
+import { PlayerId } from "../domain/player";
+import { Position } from "../domain/position";
+import { StarColor } from "../domain/star";
 
-export type EndTurnData = {
-  startPos: Position;
-  endPos: Position;
-};
-
-export type TurnEventsCB = (event: 'turn:end-turn', data: EndTurnData) => void;
+export type TurnEventsCB =
+  | ((
+      event: "turn:end-turn",
+      data: {
+        startPos: Position;
+        endPos: Position;
+      },
+    ) => void)
+  | ((
+      event: "turn:add-star-to-player",
+      data: { playerId: PlayerId; color: StarColor },
+    ) => void);

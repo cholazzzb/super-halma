@@ -1,4 +1,4 @@
-import { Flex, Text } from '@chakra-ui/react';
+import { Flex, Text, Box } from '@chakra-ui/react';
 import { useSyncExternalStore } from 'react';
 import { Color } from 'three';
 
@@ -13,21 +13,33 @@ export function TurnPanel() {
   return (
     <Flex
       position="fixed"
-      top={10}
+      top="12px"
       left="50%"
       transform="translateX(-50%)"
       zIndex={999}
-      backgroundColor="rgba(255,255,255,0.7)"
-      width={150}
-      color="black"
+      bg="whiteAlpha.700"
+      width={200}
+      color="gray.800"
       direction="column"
-      padding="12px"
+      padding="16px"
       alignItems="center"
+      borderRadius="md"
+      boxShadow="md"
     >
-      <Text>Turn: {turn}</Text>
-      <Text color={`#${new Color(playerTurn?.color).getHexString()}`}>
-        Player: {playerTurn?.id}
+      <Text fontSize="lg" fontWeight="bold" mb={2}>
+        Turn {turn}
       </Text>
+      <Box
+        width="100%"
+        padding="8px"
+        borderRadius="md"
+        bg={`#${new Color(playerTurn?.color).getHexString()}`}
+        color="white"
+        textAlign="center"
+        fontWeight="bold"
+      >
+        Player {playerTurn?.id}
+      </Box>
     </Flex>
   );
 }

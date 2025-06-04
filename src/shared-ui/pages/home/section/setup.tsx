@@ -1,16 +1,17 @@
-import { Button } from '@chakra-ui/react';
+import { Button, Center, VStack } from "@chakra-ui/react";
 
-import { player1, player2, positions } from '@/data/setup-2-players';
-import { useEventEmitter } from '@/shared-logic/hook/event-emitter';
+import { player1, player2, positions } from "@/data/setup-2-players";
+import { useEventEmitter } from "@/shared-logic/hook/event-emitter";
 
 type Props = {
   toPlaySection: () => void;
 };
+
 export function Setup(props: Props) {
   const eventEmitter = useEventEmitter();
 
-  const onClick = () => {
-    eventEmitter('setup:2-players', {
+  const handlePlayClick = () => {
+    eventEmitter("setup:2-players", {
       player1,
       player2,
       positions,
@@ -18,5 +19,12 @@ export function Setup(props: Props) {
     props.toPlaySection();
   };
 
-  return <Button onClick={onClick}>Play!</Button>;
+  return (
+    <Center height="100vh">
+      <VStack align="center">
+        <Button onClick={handlePlayClick}>2 Players Game</Button>
+        <Button disabled>4 Players Game (Coming Soon)</Button>
+      </VStack>
+    </Center>
+  );
 }

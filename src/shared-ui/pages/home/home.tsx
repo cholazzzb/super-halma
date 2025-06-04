@@ -1,32 +1,36 @@
-import { Show } from '@chakra-ui/react';
-import { useState } from 'react';
+import { Show } from "@chakra-ui/react";
+import { useState } from "react";
 
-import { Game } from './section/game';
-import { HomeSection } from './section/home';
-import { Setup } from './section/setup';
+import { useMusicPlayer } from "@/shared-logic/hook/music-player";
+import { Game } from "./section/game";
+import { HomeSection } from "./section/home";
+import { Setup } from "./section/setup";
 
-type Section = 'home' | 'setup' | 'game';
+type Section = "home" | "setup" | "game";
 
 const Home = () => {
-  const [section, setSection] = useState<Section>('setup');
+  const [section, setSection] = useState<Section>("home");
+
+  const musicPlayer = useMusicPlayer();
 
   const toSetupSection = () => {
-    setSection('setup');
+    setSection("setup");
+    musicPlayer.play();
   };
 
   const toPlaySection = () => {
-    setSection('game');
+    setSection("game");
   };
 
   return (
     <>
-      <Show when={section === 'home'}>
+      <Show when={section === "home"}>
         <HomeSection toSetupSection={toSetupSection} />
       </Show>
-      <Show when={section === 'setup'}>
+      <Show when={section === "setup"}>
         <Setup toPlaySection={toPlaySection} />
       </Show>
-      <Show when={section === 'game'}>
+      <Show when={section === "game"}>
         <Game />
       </Show>
     </>

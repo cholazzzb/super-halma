@@ -1,20 +1,19 @@
-import { Flex, Text } from '@chakra-ui/react';
-import { useSyncExternalStore } from 'react';
+import { Flex, Text, Heading } from "@chakra-ui/react";
+import { useSyncExternalStore } from "react";
 
-import {
-  getInteractionState,
-  subscribeToInteractionStore,
-} from '@/logic/store/interaction';
-import { getWorldState, subscribeToWorldStore } from '@/logic/store/world';
+import { getPlayerState, subscribeToPlayerStore } from "@/logic/store/player";
+import { getWorldState, subscribeToWorldStore } from "@/logic/store/world";
 
 export function DebugPanel() {
-  const { activedPositionId } = useSyncExternalStore(
-    subscribeToInteractionStore,
-    getInteractionState,
+  const { players } = useSyncExternalStore(
+    subscribeToPlayerStore,
+    getPlayerState,
   );
 
-  const { pieces } = useSyncExternalStore(subscribeToWorldStore, getWorldState);
-  const piece = activedPositionId && pieces[activedPositionId];
+  const { pieces, stars } = useSyncExternalStore(
+    subscribeToWorldStore,
+    getWorldState,
+  );
 
   return (
     <Flex
@@ -28,10 +27,34 @@ export function DebugPanel() {
       color="black"
       direction="column"
       padding="12px"
+      overflowY="scroll"
+      boxShadow="md"
     >
-      <Text>{activedPositionId}</Text>
-      <Text>Piece: {piece?.id}</Text>
-      <Text>OwnerId: {piece?.ownerId}</Text>
+      <Heading size="sm" mb={2}>
+        Debug Panel
+      </Heading>
+      <Heading size="xs">Pieces</Heading>
+      {Object.entries(pieces).map(([key, value]) => (
+        <Text key={key} fontSize="xs">
+          {key}: {value.ownerId}
+        </Text>
+      ))}
+      <Heading size="xs" mt={4}>
+        Stars
+      </Heading>
+      {Object.entries(stars).map(([key, value]) => (
+        <Text key={key} fontSize="xs" color={value.color}>
+          {key}: {value.color}
+        </Text>
+      ))}
+      <Heading size="xs" mt={4}>
+        Players
+      </Heading>
+      {Object.entries(players).map(([key, value]) => (
+        <Text key={key} fontSize="xs" color={value.color.toString()}>
+          {key}: {value.color.toString()}
+        </Text>
+      ))}
     </Flex>
   );
 }
