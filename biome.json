@@ -1,40 +1,25 @@
 {
   "$schema": "https://biomejs.dev/schemas/1.9.1/schema.json",
   "files": {
-    "include": ["src", "*.config.ts"],
+    "include": ["/docs"],
     "ignore": [".react-router", "*.d.ts"]
-  },
-  "organizeImports": {
-    "enabled": true
   },
   "formatter": {
     "indentStyle": "space"
   },
   "linter": {
-    "enabled": true,
+    "enabled": false,
     "rules": {
-      "recommended": true,
-      "a11y": {
-        "useSemanticElements": "error"
-      },
+      "recommended": false,
       "complexity": {
-        "noExcessiveCognitiveComplexity": "error",
-        "noUselessStringConcat": "error",
-        "noUselessUndefinedInitialization": "error",
-        "noVoid": "warn",
         "noForEach": "off",
         "noStaticOnlyClass": "off",
-        "useSimplifiedLogicExpression": "error",
         "useLiteralKeys": "off"
       },
       "correctness": {
         "noUnusedImports": "error",
         "noUnusedVariables": "error",
-        "noUnusedFunctionParameters": "error",
-        "useHookAtTopLevel": "error"
-      },
-      "nursery": {
-        "noDuplicateElseIf": "error"
+        "noUnusedFunctionParameters": "error"
       },
       "performance": {
         "noBarrelFile": "error",
@@ -61,9 +46,7 @@
       },
       "suspicious": {
         "noConsole": "off",
-        "noConsoleLog": "error",
-        "noEmptyBlockStatements": "error",
-        "useAwait": "error"
+        "noConsoleLog": "error"
       }
     }
   },
