@@ -7,8 +7,8 @@ import {
   WebGLRenderer,
 } from "three";
 import { OrbitControls } from "three/examples/jsm/Addons.js";
-import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
-import Stats from "three/examples/jsm/libs/stats.module.js";
+// import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
+// import Stats from "three/examples/jsm/libs/stats.module.js";
 
 import { Terrain } from "@/logic/domain/terrain";
 
@@ -18,9 +18,9 @@ export class ThreeApp {
   public camera: PerspectiveCamera;
   public controls: OrbitControls;
 
-  // Debugger
-  public gui: GUI;
-  public stats: Stats;
+  // // Debugger
+  // public gui: GUI;
+  // public stats: Stats;
 
   constructor(canvas: HTMLCanvasElement) {
     this.renderer = this.initRenderer(canvas);
@@ -88,14 +88,14 @@ export class ThreeApp {
     return controls;
   }
 
-  private initDebugger() {
-    const stats = new Stats();
-    document.body.appendChild(stats.dom);
+  // private initDebugger() {
+  //   const stats = new Stats();
+  //   document.body.appendChild(stats.dom);
 
-    const gui = new GUI();
+  //   const gui = new GUI();
 
-    return { stats, gui };
-  }
+  //   return { stats, gui };
+  // }
 
   private animate() {
     this.controls.update();
