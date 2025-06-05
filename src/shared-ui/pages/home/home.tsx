@@ -1,7 +1,7 @@
 import { Show } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { useMusicPlayer } from "@/shared-logic/hook/music-player";
+import { useMusicPlayer } from "@/shared-logic/hook/use-music-player";
 import { Game } from "./section/game";
 import { HomeSection } from "./section/home";
 import { Setup } from "./section/setup";

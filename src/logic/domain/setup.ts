@@ -66,7 +66,7 @@ export class Victory {
  * Generates a list of stars with their random positions on a board.
  */
 export function generateStarPositions(
-  piecesPos: Set<PositionId>,
+  occupied: Set<PositionId>,
   totalStarsToCreate = 3,
   boardWidth = Terrain.width,
   boardHeight = Terrain.height,
@@ -75,7 +75,7 @@ export function generateStarPositions(
   for (let z = 0; z < boardHeight; z++) {
     for (let x = 0; x < boardWidth; x++) {
       const pos = Position.fromArray([x, z]);
-      if (!piecesPos.has(pos.toId())) {
+      if (!occupied.has(pos.toId())) {
         allPossiblePositions.push(pos);
       }
     }

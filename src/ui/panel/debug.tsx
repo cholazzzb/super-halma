@@ -1,4 +1,4 @@
-import { Flex, Text, Heading } from "@chakra-ui/react";
+import { Flex, Heading, Text } from "@chakra-ui/react";
 import { useSyncExternalStore } from "react";
 
 import { getPlayerState, subscribeToPlayerStore } from "@/logic/store/player";
@@ -10,10 +10,7 @@ export function DebugPanel() {
     getPlayerState,
   );
 
-  const { pieces, stars } = useSyncExternalStore(
-    subscribeToWorldStore,
-    getWorldState,
-  );
+  const { pieces } = useSyncExternalStore(subscribeToWorldStore, getWorldState);
 
   return (
     <Flex
@@ -42,11 +39,6 @@ export function DebugPanel() {
       <Heading size="xs" mt={4}>
         Stars
       </Heading>
-      {Object.entries(stars).map(([key, value]) => (
-        <Text key={key} fontSize="xs" color={value.color}>
-          {key}: {value.color}
-        </Text>
-      ))}
       <Heading size="xs" mt={4}>
         Players
       </Heading>

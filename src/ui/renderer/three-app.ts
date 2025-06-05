@@ -7,10 +7,11 @@ import {
   WebGLRenderer,
 } from "three";
 import { OrbitControls } from "three/examples/jsm/Addons.js";
-// import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
-// import Stats from "three/examples/jsm/libs/stats.module.js";
+import GUI from "three/examples/jsm/libs/lil-gui.module.min.js";
+import Stats from "three/examples/jsm/libs/stats.module.js";
 
 import { Terrain } from "@/logic/domain/terrain";
+import { isProd } from "@/shared-logic/env";
 
 export class ThreeApp {
   public renderer: WebGLRenderer;
@@ -18,9 +19,9 @@ export class ThreeApp {
   public camera: PerspectiveCamera;
   public controls: OrbitControls;
 
-  // // Debugger
-  // public gui: GUI;
-  // public stats: Stats;
+  // Debugger
+  public gui?: GUI;
+  public stats?: Stats;
 
   constructor(canvas: HTMLCanvasElement) {
     this.renderer = this.initRenderer(canvas);
@@ -28,9 +29,11 @@ export class ThreeApp {
     this.camera = this.initCamera();
     this.controls = this.initControls();
 
-    // const { gui, stats } = this.initDebugger();
-    // this.gui = gui;
-    // this.stats = stats;
+    if (!isProd) {
+      const { gui, stats } = this.initDebugger();
+      this.gui = gui;
+      this.stats = stats;
+    }
   }
 
   start() {
@@ -88,18 +91,20 @@ export class ThreeApp {
     return controls;
   }
 
-  // private initDebugger() {
-  //   const stats = new Stats();
-  //   document.body.appendChild(stats.dom);
+  private initDebugger() {
+    const stats = new Stats();
+    document.body.appendChild(stats.dom);
 
-  //   const gui = new GUI();
+    const gui = new GUI();
 
-  //   return { stats, gui };
-  // }
+    return { stats, gui };
+  }
 
   private animate() {
     this.controls.update();
     this.renderer.render(this.scene, this.camera);
-    // this.stats.update();
+    if (this.stats) {
+      this.stats.update();
+    }
   }
 }

@@ -1,5 +1,6 @@
-import { Listener, Store } from '@/shared-logic/store';
-import { Player } from '../domain/player';
+import { Listener, Store } from "@/shared-logic/store";
+import { Player } from "../domain/player";
+import { logger } from "@/shared-logic/logger";
 
 interface GameState {
   playerSequence: Array<Player>;
@@ -36,7 +37,7 @@ class GameStore extends Store<GameState> {
     const { playerSequence, playerTurn, turn } = this.state;
 
     if (playerSequence.length === 0) {
-      console.warn('Cannot advance turn: no players in the game.');
+      logger.warn("Cannot advance turn: no players in the game.");
       return;
     }
 
@@ -47,7 +48,7 @@ class GameStore extends Store<GameState> {
       );
 
       if (currentPlayerIndex === -1) {
-        console.error(
+        logger.error(
           `Current player ${playerTurn.id} not found in sequence. Defaulting to the first player.`,
         );
       }

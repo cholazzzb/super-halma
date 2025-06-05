@@ -1,18 +1,15 @@
 import { Listener, Store } from "@/shared-logic/store";
-import { Star } from "@/ui/renderer/star";
 import { Piece } from "../domain/piece";
 import { Position, PositionId } from "../domain/position";
 
 interface State {
   pieces: Record<PositionId, Piece>;
-  stars: Record<PositionId, Star>;
 }
 
 class WorldStore extends Store<State> {
   constructor() {
     super({
       pieces: {},
-      stars: {},
     });
   }
 
@@ -53,33 +50,6 @@ class WorldStore extends Store<State> {
 
   checkOwnerId(posId: PositionId): string | undefined {
     return this.state.pieces[posId]?.ownerId;
-  }
-
-  addStar(star: Star, position: Position) {
-    const posId = position.toId();
-    this.setState(
-      {
-        ...this.state,
-        stars: {
-          ...this.state.stars,
-          [posId]: star,
-        },
-      },
-      `world: add star @ ${posId}`,
-    );
-  }
-
-  removeStar(position: Position) {
-    const posId = position.toId();
-    const { [posId]: _, ...restStars } = this.state.stars;
-
-    this.setState(
-      {
-        ...this.state,
-        stars: restStars,
-      },
-      `world: remove star @ ${posId}`,
-    );
   }
 }
 

@@ -1,10 +1,12 @@
 import { Position } from "@/logic/domain/position";
 import { logic } from "@/logic/main";
+import { Meshes, meshesStore } from "@/logic/store/meshes";
+import { threeAppStore } from "@/logic/store/three-app";
+import { worldStore } from "@/logic/store/world";
 import { RaycasterHandler } from "../raycaster-handler";
 import { Tile } from "../tile";
 import { Command } from "./interface";
-import { worldStore } from "@/logic/store/world";
-import { threeAppStore } from "@/logic/store/three-app";
+import { logger } from "@/shared-logic/logger";
 
 const eventBus = logic.eventBus;
 
@@ -44,7 +46,8 @@ export class SelectTargetCommand implements Command {
     this.raycasterHandler.targetsObj = [];
 
     // Add star to player if any
-    const { stars } = worldStore.getState();
+    const { meshes } = meshesStore.getState();
+    const { stars } = meshes!;
     const star = stars[endPos.toId()];
     if (star) {
       eventBus.emit("turn:add-star-to-player", {
@@ -54,10 +57,13 @@ export class SelectTargetCommand implements Command {
 
       // remove star from the UI
       const { threeApp } = threeAppStore.getState();
-      console.log("star", { star });
-      threeApp!.scene.getObjectByName("world")!.remove(star);
+      logger.warn("STAR TO REMOVE:" + star.id);
+      const starToRemove = threeApp!.scene.getObjectById(star.id)!;
+      threeApp!.scene.remove(starToRemove);
 
-      worldStore.removeStar(endPos);
+      const { [endPos.toId()]: _, ...nextStars } = { ...meshes?.stars };
+      const nextMeshes: Meshes = { ...meshes!, stars: { ...nextStars } };
+      meshesStore.setMeshes(nextMeshes);
     }
 
     // Finish turn

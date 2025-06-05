@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import { backsound1, backsound2, backsound3, backsound4 } from "@/data/music";
+import { logger } from "../logger";
 
 const tracks = [backsound1, backsound2, backsound3, backsound4];
 
@@ -22,7 +23,7 @@ export function useMusicPlayer() {
     const audio = audioRef.current;
     audio.src = tracks[index];
     audio.load();
-    await audio.play().catch(console.warn);
+    await audio.play().catch(logger.warn);
     setCurrentIndex(index);
   };
 
@@ -46,7 +47,7 @@ export function useMusicPlayer() {
       const firstTrackIndex = Math.floor(Math.random() * tracks.length);
       await playTrack(firstTrackIndex);
     } catch (error) {
-      console.error(`failed to play backsound ${error}`);
+      logger.error(`failed to play backsound ${error}`);
     }
   };
 

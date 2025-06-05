@@ -1,6 +1,6 @@
 import { Raycaster } from "three";
 
-import { Meshes } from "@/logic/service/setup";
+import { Meshes } from "@/logic/store/meshes";
 import { SelectPieceCommand } from "./command/select-piece";
 import { SelectTargetCommand } from "./command/select-target";
 import type { Interactionable } from "./interactionable";

@@ -1,13 +1,15 @@
 import { useEffect, useRef } from "react";
 
-import { threeAppStore } from "@/logic/store/three-app";
+import { meshesStore } from "@/logic/store/meshes";
 import { useEventEmitter } from "@/shared-logic/hook/event-emitter";
+import { DebugPanel } from "@/ui/panel/debug";
 import { Player1Panel } from "@/ui/panel/player-1";
 import { Player2Panel } from "@/ui/panel/player-2";
 import { TurnPanel } from "@/ui/panel/turn";
 import { EventHandler } from "@/ui/renderer/event-handler";
 import { ThreeApp } from "@/ui/renderer/three-app";
-import { DebugPanel } from "@/ui/panel/debug";
+import { Show } from "@chakra-ui/react";
+import { isProd } from "@/shared-logic/env";
 
 export function Game() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -23,7 +25,7 @@ export function Game() {
 
     eventEmitter("setup:render-world", { threeApp });
 
-    const { meshes } = threeAppStore.getState();
+    const { meshes } = meshesStore.getState();
     if (!meshes) {
       throw Error("game.tsx: failed to get meshes record for eventHandler");
     }
@@ -35,9 +37,12 @@ export function Game() {
       <canvas ref={canvasRef} />
 
       <TurnPanel />
-      <DebugPanel />
       <Player1Panel />
       <Player2Panel />
+
+      <Show when={!isProd}>
+        <DebugPanel />
+      </Show>
     </>
   );
 }

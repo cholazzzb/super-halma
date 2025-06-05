@@ -1,28 +1,21 @@
+import { getRandomArrEl } from "@/shared-logic/random";
 import { GameService } from "@/shared-logic/service";
 import { renderPieces } from "@/ui/renderer/initializer/game";
-import { Piece } from "@/ui/renderer/piece";
-import { World } from "@/ui/renderer/world";
-import { Terrain } from "../domain/terrain";
-import { EventBus } from "../event/event-bus";
-import { BusEventData } from "../event/type";
-import { gameStore } from "../store/game";
-import { playerStore } from "../store/player";
-import { threeAppStore } from "../store/three-app";
-import { worldStore } from "../store/world";
-import { generateStarPositions } from "../domain/setup";
-import { PositionId } from "../domain/position";
 import {
   IndigoStar,
   MagentaStar,
   SilverStar,
   TealStar,
 } from "@/ui/renderer/star";
-import { getRandomArrEl } from "@/shared-logic/random";
-
-export type Meshes = {
-  world: World;
-  pieces: Array<Piece>;
-};
+import { PositionId } from "../domain/position";
+import { generateStarPositions } from "../domain/setup";
+import { EventBus } from "../event/event-bus";
+import { BusEventData } from "../event/type";
+import { gameStore } from "../store/game";
+import { Meshes, meshesStore } from "../store/meshes";
+import { playerStore } from "../store/player";
+import { threeAppStore } from "../store/three-app";
+import { worldStore } from "../store/world";
 
 export class SetupService extends GameService {
   constructor(eventBus: EventBus) {
@@ -52,13 +45,16 @@ export class SetupService extends GameService {
   }
 
   private renderWorld({ threeApp }: BusEventData<"setup:render-world">) {
-    const world = new World(Terrain.width, Terrain.height);
+    const {
+      meshes: { world },
+    } = meshesStore.getState();
     threeApp.scene.add(world);
     const pieces = renderPieces();
     pieces.map((pi) => world.add(pi));
 
     const { pieces: piecesMap } = worldStore.getState();
     const piecesPos = new Set(Object.keys(piecesMap) as Array<PositionId>);
+    const stars: Meshes["stars"] = {};
 
     const starsPosition = generateStarPositions(piecesPos);
     for (const sp of starsPosition) {
@@ -69,16 +65,17 @@ export class SetupService extends GameService {
         SilverStar,
       ]);
       const star = new StarKind(sp);
-      world.add(star);
-      worldStore.addStar(star, sp);
+      threeApp.scene.add(star);
+      stars[sp.toId()] = star;
     }
 
     const meshes: Meshes = {
       world,
       pieces,
+      stars,
     };
 
     threeAppStore.setThreeApp(threeApp);
-    threeAppStore.setMeshes(meshes);
+    meshesStore.setMeshes(meshes);
   }
 }

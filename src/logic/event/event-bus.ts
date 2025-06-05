@@ -1,4 +1,5 @@
-import { BusEventData, BusEventType } from '@/logic/event/type';
+import { BusEventData, BusEventType } from "@/logic/event/type";
+import { logger } from "@/shared-logic/logger";
 
 /**
  * EventBus class for implementing the publish-subscribe pattern
@@ -141,7 +142,7 @@ export class EventBus {
         // This cast is safe because we only register callbacks with matching event types
         (callback as (data: BusEventData<T>) => void)(data);
       } catch (error) {
-        console.error(`Error in event listener for ${eventType}:`, error);
+        logger.error(`Error in event listener for ${eventType}:`, error);
       }
     }
   }

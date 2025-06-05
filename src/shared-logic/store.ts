@@ -1,3 +1,5 @@
+import { logger } from "./logger";
+
 /**
  * Type for store listener functions
  */
@@ -21,10 +23,10 @@ export class Store<T> {
    * @returns {() => void} A function to unsubscribe the listener.
    */
   subscribe(listener: Listener, debug?: string): () => void {
-    console.debug("subscribed", debug);
+    logger.debug("subscribed", debug);
     this.listeners.add(listener);
     return () => {
-      console.debug("unsubscribed", debug);
+      logger.debug("unsubscribed", debug);
       this.listeners.delete(listener);
     };
   }
@@ -33,7 +35,7 @@ export class Store<T> {
    * Emits a change event to all subscribed listeners.
    */
   protected emitChange(debug?: string) {
-    console.debug(debug);
+    logger.debug(debug);
     for (const listener of this.listeners) {
       listener();
     }
