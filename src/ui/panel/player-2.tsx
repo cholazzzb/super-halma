@@ -59,7 +59,7 @@ export function Player2Panel() {
           filter: "drop-shadow(0 0 8px #0000ff)",
         }}
       >
-        <Avatar.Fallback name="Player 1" />
+        <Avatar.Fallback name="Player 2" />
       </Avatar.Root>
       <Text
         mt={2}
