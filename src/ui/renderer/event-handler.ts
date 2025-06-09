@@ -1,9 +1,10 @@
 import { PerspectiveCamera, Vector2, WebGLRenderer } from "three";
 
-import { Piece } from "./piece";
+import { Meshes } from "@/logic/store/meshes";
+import { FirePiece } from "./piece/fire-piece";
+import { WaterPiece } from "./piece/water-piece";
 import { RaycasterHandler } from "./raycaster-handler";
 import { Tile } from "./tile";
-import { Meshes } from "@/logic/store/meshes";
 
 export class EventHandler {
   private raycasterHandler: RaycasterHandler;
@@ -51,13 +52,18 @@ export class EventHandler {
     );
 
     this.raycasterHandler.raycaster.setFromCamera(coords, this.camera);
-    const intersections = this.raycasterHandler.raycaster.intersectObjects([
-      ...this.meshes.world.terrain.flat(),
-      ...this.meshes.pieces,
-    ]);
+    const intersections = this.raycasterHandler.raycaster.intersectObjects(
+      [...this.meshes.world!.terrain.flat(), ...this.meshes.pieces],
+      true,
+    );
 
     const intersect = intersections?.[0] ?? { object: null };
-    return intersect.object as Tile | Piece | null;
+    if (intersect.object?.name === "tile") return intersect.object as Tile;
+    else if (intersect.object !== null) {
+      return intersect.object.parent?.parent as FirePiece | WaterPiece;
+    }
+
+    return null;
   }
 
   dispose() {

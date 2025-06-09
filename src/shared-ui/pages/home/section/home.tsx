@@ -6,7 +6,7 @@ type Props = {
 
 export function HomeSection(props: Props) {
   return (
-    <Center height="100vh">
+    <Center height="100vh" bgColor="#80b0ff">
       <VStack
         align="center"
         justify="center"
@@ -28,7 +28,11 @@ export function HomeSection(props: Props) {
           A strategic board game of leaps and bounds! Outmaneuver your opponents
           and be the first to collect the stars.
         </Text>
-        <Button colorScheme="blue" size="lg" onClick={props.toSetupSection}>
+        <Button
+          backgroundColor="red.300"
+          size="lg"
+          onClick={props.toSetupSection}
+        >
           Play Now!
         </Button>
         <Box mt={4}>

@@ -1,17 +1,21 @@
 import { Position } from "@/logic/domain/position";
-import { logic } from "@/logic/main";
+import { EventBus } from "@/logic/event/event-bus";
 import { Meshes, meshesStore } from "@/logic/store/meshes";
 import { threeAppStore } from "@/logic/store/three-app";
 import { worldStore } from "@/logic/store/world";
+import { resolve } from "@/shared-logic/decorator/dependency-injection";
+import { logger } from "@/shared-logic/logger";
 import { RaycasterHandler } from "../raycaster-handler";
 import { Tile } from "../tile";
 import { Command } from "./interface";
-import { logger } from "@/shared-logic/logger";
-
-const eventBus = logic.eventBus;
 
 export class SelectTargetCommand implements Command {
-  constructor(private raycasterHandler: RaycasterHandler) {}
+  private eventBus: EventBus;
+
+  constructor(private raycasterHandler: RaycasterHandler) {
+    const eventBus = resolve(EventBus);
+    this.eventBus = eventBus;
+  }
 
   execute(mesh: Tile): void {
     const isValid =
@@ -34,7 +38,7 @@ export class SelectTargetCommand implements Command {
     // move piece
     this.raycasterHandler.activeObj?.position.set(
       endPos.x,
-      mesh.position.y,
+      activeObj.position.y,
       endPos.z,
     );
 
@@ -50,7 +54,7 @@ export class SelectTargetCommand implements Command {
     const { stars } = meshes!;
     const star = stars[endPos.toId()];
     if (star) {
-      eventBus.emit("turn:add-star-to-player", {
+      this.eventBus.emit("turn:add-star-to-player", {
         playerId,
         color: star.color,
       });
@@ -67,7 +71,7 @@ export class SelectTargetCommand implements Command {
     }
 
     // Finish turn
-    eventBus.emit("turn:end-turn", {
+    this.eventBus.emit("turn:end-turn", {
       startPos,
       endPos,
     });

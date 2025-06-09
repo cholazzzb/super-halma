@@ -1,9 +1,9 @@
-import { Piece } from '@/logic/domain/piece';
-import { Player } from '@/logic/domain/player';
-import { Position } from '@/logic/domain/position';
+import { Piece } from "@/logic/domain/piece";
+import { Player } from "@/logic/domain/player";
+import { Position } from "@/logic/domain/position";
 
-export const player1 = new Player(0xff0000, 0xdd3344);
-export const player2 = new Player(0x0000ff, 0x3344dd);
+export const player1 = new Player(0xff0000, 0xdd3344, "fire-piece");
+export const player2 = new Player(0x0000ff, 0x3344dd, "water-piece");
 
 export const positions: Array<[Piece, Position]> = [
   // Player 1

@@ -12,12 +12,14 @@ import Stats from "three/examples/jsm/libs/stats.module.js";
 
 import { Terrain } from "@/logic/domain/terrain";
 import { isProd } from "@/shared-logic/env";
+import { AssetManager } from "./asset-manager";
 
 export class ThreeApp {
   public renderer: WebGLRenderer;
   public scene: Scene;
   public camera: PerspectiveCamera;
   public controls: OrbitControls;
+  public assetManager: AssetManager;
 
   // Debugger
   public gui?: GUI;
@@ -28,6 +30,7 @@ export class ThreeApp {
     this.scene = this.initScene();
     this.camera = this.initCamera();
     this.controls = this.initControls();
+    this.assetManager = new AssetManager();
 
     if (!isProd) {
       const { gui, stats } = this.initDebugger();
@@ -56,7 +59,7 @@ export class ThreeApp {
     scene.fog = new Fog(0x80b0ff, 10, 40);
 
     const sun = new DirectionalLight();
-    sun.intensity = 30;
+    sun.intensity = 10;
     sun.position.set(100, 2000, 100);
     scene.add(sun);
 

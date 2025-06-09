@@ -1,28 +1,33 @@
+import { assets } from "@/data/asset";
 import { Listener, Store } from "@/shared-logic/store";
-import { Piece } from "@/ui/renderer/piece";
+import { FirePiece } from "@/ui/renderer/piece/fire-piece";
+import { WaterPiece } from "@/ui/renderer/piece/water-piece";
 import { Star } from "@/ui/renderer/star";
 import { World } from "@/ui/renderer/world";
 import { PositionId } from "../domain/position";
-import { Terrain } from "../domain/terrain";
 
 export type Meshes = {
-  world: World;
-  pieces: Array<Piece>;
+  world: World | null;
+  pieces: Array<FirePiece | WaterPiece>;
   stars: Record<PositionId, Star>;
 };
 
 interface State {
   meshes: Meshes;
+  loaded: number;
+  unloaded: number;
 }
 
 class MeshesStore extends Store<State> {
   constructor() {
     super({
       meshes: {
-        world: new World(Terrain.width, Terrain.height),
+        world: null,
         pieces: [],
         stars: {},
       },
+      loaded: 0,
+      unloaded: assets.length,
     });
   }
   setMeshes(meshes: Meshes) {

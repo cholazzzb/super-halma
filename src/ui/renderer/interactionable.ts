@@ -1,6 +1,6 @@
-import { Mesh } from 'three';
+import { Object3D } from "three";
 
-export interface Interactionable extends Mesh {
+export interface Interactionable extends Object3D {
   /**
    *
    * @param on

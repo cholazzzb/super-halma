@@ -1,3 +1,5 @@
+import { resolve } from "@/shared-logic/decorator/dependency-injection";
+import { logger } from "@/shared-logic/logger";
 import { getRandomArrEl } from "@/shared-logic/random";
 import { GameService } from "@/shared-logic/service";
 import {
@@ -11,14 +13,15 @@ import { generateStarPositions } from "../domain/setup";
 import { EventBus } from "../event/event-bus";
 import { BusEventData } from "../event/type";
 import { gameStore } from "../store/game";
+import { Meshes, meshesStore } from "../store/meshes";
 import { starStore } from "../store/star";
 import { threeAppStore } from "../store/three-app";
 import { worldStore } from "../store/world";
-import { Meshes, meshesStore } from "../store/meshes";
-import { logger } from "@/shared-logic/logger";
 
 export class TurnService extends GameService {
-  constructor(eventBus: EventBus) {
+  constructor() {
+    const eventBus = resolve(EventBus);
+
     super(eventBus);
     this.initialize();
   }

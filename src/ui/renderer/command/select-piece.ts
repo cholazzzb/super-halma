@@ -1,31 +1,36 @@
-import { MoveFinder } from '@/logic/domain/move-finder';
-import { Position, PositionId } from '@/logic/domain/position';
-import { logic } from '@/logic/main';
-import { gameStore } from '@/logic/store/game';
-import { worldStore } from '@/logic/store/world';
-import { Piece } from '../piece';
-import { RaycasterHandler } from '../raycaster-handler';
-import { Command } from './interface';
-
-const eventBus = logic.eventBus;
+import { MoveFinder } from "@/logic/domain/move-finder";
+import { Position, PositionId } from "@/logic/domain/position";
+import { EventBus } from "@/logic/event/event-bus";
+import { gameStore } from "@/logic/store/game";
+import { worldStore } from "@/logic/store/world";
+import { resolve } from "@/shared-logic/decorator/dependency-injection";
+import { FirePiece } from "../piece/fire-piece";
+import { WaterPiece } from "../piece/water-piece";
+import { RaycasterHandler } from "../raycaster-handler";
+import { Command } from "./interface";
 
 export class SelectPieceCommand implements Command {
-  constructor(private raycasterHandler: RaycasterHandler) {}
+  private eventBus: EventBus;
 
-  execute(mesh: Piece): void {
+  constructor(private raycasterHandler: RaycasterHandler) {
+    const eventBus = resolve(EventBus);
+    this.eventBus = eventBus;
+  }
+
+  execute(mesh: FirePiece | WaterPiece): void {
     this.unselect();
     this.select(mesh);
   }
 
-  private select(mesh: Piece) {
-    const startPos = Position.fromArray([mesh.position.x, mesh.position.z]);
+  private select(mesh: FirePiece | WaterPiece) {
+    const startPos = Position.fromArray([mesh!.position.x, mesh!.position.z]);
 
     const ownerId = worldStore.checkOwnerId(startPos.toId());
     const turnId = gameStore.getState().playerTurn?.id;
 
     if (ownerId !== turnId) return;
 
-    eventBus.emit('ui-handler:on-active', {
+    this.eventBus.emit("ui-handler:on-active", {
       position: startPos,
     });
 
@@ -51,7 +56,7 @@ export class SelectPieceCommand implements Command {
       moves.map((mv) => mv.endPos.toId()),
     );
 
-    this.raycasterHandler.meshes.world.terrain.forEach((tile) => {
+    this.raycasterHandler.meshes.world!.terrain.forEach((tile) => {
       const tilePos = Position.fromArray([tile.position.x, tile.position.z]);
       if (targetsPos.has(tilePos.toId())) {
         tile.targeted(true);

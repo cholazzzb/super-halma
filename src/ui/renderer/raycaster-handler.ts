@@ -1,10 +1,12 @@
 import { Raycaster } from "three";
 
 import { Meshes } from "@/logic/store/meshes";
+import { CommandMesh } from "./command/interface";
 import { SelectPieceCommand } from "./command/select-piece";
 import { SelectTargetCommand } from "./command/select-target";
 import type { Interactionable } from "./interactionable";
-import type { Piece } from "./piece";
+import { FirePiece } from "./piece/fire-piece";
+import { WaterPiece } from "./piece/water-piece";
 import type { Tile } from "./tile";
 
 export class RaycasterHandler {
@@ -22,10 +24,10 @@ export class RaycasterHandler {
     return this.highlightObj.id !== this.activeObj.id;
   }
 
-  public handleHover(mesh: Tile | Piece | null) {
+  public handleHover(mesh: CommandMesh) {
     const skip = this.isMeshEqualTarget(mesh);
-    if (this.shouldUnhover() && !skip) this.handleUnhover();
     if (mesh) {
+      if (this.shouldUnhover() && !skip) this.handleUnhover();
       if (this.activeObj?.id === mesh?.id || skip) {
         return;
       }
@@ -41,22 +43,24 @@ export class RaycasterHandler {
     this.highlightObj = null;
   }
 
-  public onClick(mesh: Tile | Piece | null) {
+  public onClick(mesh: CommandMesh) {
     if (mesh === null) return;
     if (mesh.name === "tile" && this.targetsObj.length > 0) {
-      new SelectTargetCommand(this).execute(mesh);
+      const meshTile = mesh as Tile;
+      new SelectTargetCommand(this).execute(meshTile);
       return;
     }
 
-    if (mesh.name === "piece") {
-      new SelectPieceCommand(this).execute(mesh);
+    if (mesh.name.includes("piece")) {
+      const meshPiece = mesh as FirePiece | WaterPiece;
+      new SelectPieceCommand(this).execute(meshPiece);
       return;
     }
 
     return;
   }
 
-  private isMeshEqualTarget(mesh: Tile | Piece | null): boolean {
+  private isMeshEqualTarget(mesh: CommandMesh): boolean {
     return (
       this.targetsObj.filter(
         (to) =>

@@ -1,3 +1,5 @@
+import { Asset } from "@/data/asset";
+
 let nextPlayerId = 1;
 
 export type PlayerId = `player-${number}`;
@@ -11,6 +13,7 @@ export class Player {
   constructor(
     public color: number,
     public highlightColor: number,
+    public pieceModelName: Asset["name"],
   ) {
     this._id = generatePlayerId();
   }

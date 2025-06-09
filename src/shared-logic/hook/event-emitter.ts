@@ -1,9 +1,10 @@
-import { useCallback } from 'react';
+import { useCallback } from "react";
 
-import { BusEventData, BusEventType } from '@/logic/event/type';
-import { logic } from '@/logic/main';
+import { EventBus } from "@/logic/event/event-bus";
+import { BusEventData, BusEventType } from "@/logic/event/type";
+import { resolve } from "../decorator/dependency-injection";
 
-const eventBus = logic.eventBus;
+const eventBus = resolve(EventBus);
 
 export function useEventEmitter() {
   return useCallback(

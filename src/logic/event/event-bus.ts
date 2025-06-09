@@ -1,4 +1,5 @@
 import { BusEventData, BusEventType } from "@/logic/event/type";
+import { registerSingleton } from "@/shared-logic/decorator/dependency-injection";
 import { logger } from "@/shared-logic/logger";
 
 /**
@@ -192,3 +193,9 @@ export class EventBus {
     return this.eventHistory.slice(-historyLimit);
   }
 }
+
+const eventBusInstance = new EventBus({
+  enableHistory: true,
+  maxHistoryLength: 25,
+});
+registerSingleton(EventBus, eventBusInstance);

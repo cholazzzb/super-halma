@@ -1,19 +1,19 @@
-import { Flex, Text, Box } from '@chakra-ui/react';
-import { useSyncExternalStore } from 'react';
-import { Color } from 'three';
+import { Flex, Text, Box } from "@chakra-ui/react";
+import { useSyncExternalStore } from "react";
+import { Color } from "three";
 
-import { getGameState, subscribeToGameStore } from '@/logic/store/game';
+import { getGameState, subscribeToGameStore } from "@/logic/store/game";
 
 export function TurnPanel() {
   const { turn, playerTurn } = useSyncExternalStore(
     subscribeToGameStore,
-    getGameState,
+    getGameState
   );
 
   return (
     <Flex
       position="fixed"
-      top="12px"
+      bottom="60px"
       left="50%"
       transform="translateX(-50%)"
       zIndex={999}
@@ -38,7 +38,7 @@ export function TurnPanel() {
         textAlign="center"
         fontWeight="bold"
       >
-        Player {playerTurn?.id}
+        {playerTurn?.id}
       </Box>
     </Flex>
   );

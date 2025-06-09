@@ -40,10 +40,16 @@ const extrudeSettings = {
 
 const geometry = new ExtrudeGeometry(starShape, extrudeSettings);
 
+
 export class Star extends Mesh {
   static y = 0.3;
 
   public material: MeshPhongMaterial;
+  private baseY: number;
+  private elapsed: number = 0;
+  private animationId: number | null = null;
+  private oscillationAmplitude: number = 0.05;
+  private oscillationSpeed: number = 2; // radians per second
 
   constructor(
     public color: StarColor,
@@ -57,13 +63,42 @@ export class Star extends Mesh {
     this.rotation.x = 0;
     this.rotation.z = Math.PI / 2;
     this.position.y = Star.y;
+    this.baseY = Star.y;
     this.rotation.y = Math.PI / 4;
     this.castShadow = true;
     this.receiveShadow = true;
+
+    this.animate = this.animate.bind(this);
+    this.startOscillation();
   }
 
   setPosition(pos: Position) {
     this.position.set(pos.x, Star.y, pos.z);
+    this.baseY = Star.y;
+  }
+
+  private animate(time: number) {
+    // time is in ms
+    this.elapsed = time * 0.001; // convert to seconds
+    this.position.y = this.baseY + Math.sin(this.elapsed * this.oscillationSpeed) * this.oscillationAmplitude;
+    this.animationId = requestAnimationFrame(this.animate);
+  }
+
+  private startOscillation() {
+    if (this.animationId === null) {
+      this.animationId = requestAnimationFrame(this.animate);
+    }
+  }
+
+  public stopOscillation() {
+    if (this.animationId !== null) {
+      cancelAnimationFrame(this.animationId);
+      this.animationId = null;
+    }
+  }
+
+  public dispose() {
+    this.stopOscillation();
   }
 }
 
