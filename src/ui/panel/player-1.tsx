@@ -25,7 +25,6 @@ export function Player1Panel() {
 
   const mainRed = "#ff0000";
   const accentRed = "#dd3344";
-  const lightBg = "rgba(255, 255, 255, 0.92)";
 
   return (
     <Flex
@@ -41,7 +40,7 @@ export function Player1Panel() {
       alignItems="center"
       borderRadius="lg"
       boxShadow={`0 0 16px 2px ${mainRed}, 0 2px 16px 0 ${accentRed}`}
-      bg={lightBg}
+      bg={"transparent"}
       backdropFilter="blur(6px)"
       border="2px solid"
       borderColor={accentRed}
