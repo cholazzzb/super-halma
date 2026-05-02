@@ -37,7 +37,7 @@ export function HomeSection(props: Props) {
         </Button>
         <Box mt={4}>
           <Text fontSize="sm" color="gray.500">
-            © 2025 Toro Corp. All rights reserved.
+            © 2026 Toro Corp. All rights reserved.
           </Text>
         </Box>
       </VStack>

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">super-halma</string>
+    <string name="title_activity_main">super-halma</string>
+    <string name="package_name">com.toro.superhalma</string>
+    <string name="custom_url_scheme">com.toro.superhalma</string>
+</resources>

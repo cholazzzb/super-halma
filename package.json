@@ -12,6 +12,11 @@
     "neverBuiltDependencies": []
   },
   "scripts": {
+    "cap": "pnpm capacitor",
+    "cap:add:android": "pnpm cap add android",
+    "cap:add:ios": "pnpm cap add ios",
+    "cap:sync": "pnpm cap sync",
+    "cap:build:android": "pnpm cap build android",
     "dev": "react-router dev",
     "build": "pnpm typegen && react-router build",
     "generate-pwa-assets": "pwa-assets-generator",
@@ -34,6 +39,8 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@capacitor/android": "^8.3.1",
+    "@capacitor/core": "^8.3.1",
     "@chakra-ui/react": "^3.19.0",
     "@emotion/react": "^11.14.0",
     "@fontsource-variable/plus-jakarta-sans": "^5.2.5",
@@ -49,6 +56,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
+    "@capacitor/cli": "^8.3.1",
     "@chakra-ui/cli": "^3.19.0",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
